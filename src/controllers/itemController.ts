@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { items, Item } from '../models/item';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
 
 // Create an item
 export const createItem = (req: Request, res: Response, next: NextFunction) => {
