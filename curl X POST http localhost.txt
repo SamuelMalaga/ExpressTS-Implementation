@@ -1,0 +1,18 @@
+curl -X POST http://localhost:3031/api/items \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Sample Item"}'
+  
+curl -X GET http://localhost:3031/api/items/1 \
+  -H "Content-Type: application/json" 
+
+curl -X GET http://localhost:3031/api/items \
+  -H "Content-Type: application/json" 
+
+curl -X PUT http://localhost:3031/api/items/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"changed name","description": "changed description via curl"}'
+  
+  
+curl -X DELETE http://localhost:3031/api/items/1 \
+  -H "Content-Type: application/json" 
+
