@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { Item } from '../models/item';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { prisma } from '../config/prisma';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
-const prisma = new PrismaClient();
+// export const prisma = new PrismaClient();
 
 
 // Create an item
