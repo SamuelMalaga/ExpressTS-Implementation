@@ -19,4 +19,24 @@ export default class itemRepository {
 
         return result;
     }
+
+    async getItemById(itemId:number): Promise<Item | null> {
+        const foundItem = prisma.item.findUnique({
+            where:{
+                id:itemId
+            }
+        })
+        return foundItem
+    }
+
+    async updateItemById(itemId:number,attributes:Record<string, string>){
+        const updatedItem = prisma.item.update({
+            where:{
+                id: itemId
+            },
+            data:attributes
+        })
+
+        return updatedItem;
+    }
 }

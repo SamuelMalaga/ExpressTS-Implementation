@@ -34,23 +34,12 @@ export const getItems = async (req: Request, res: Response, next: NextFunction) 
 export const getItemById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const requestId = parseInt(req.params.id);
-    await prisma.$connect()
-    const item = await prisma.item.findFirstOrThrow({
-      where:{
-        id: requestId
-      }
-    })
+    const item = await ItemRepository.getItemById(requestId)
+    if(item === null){res.status(404).json({"message":"item not found"})}
     res.json(item);
   } catch (error) {
-    if (error === PrismaClientKnownRequestError){
-      res.status(404).json({message: 'item not found'})
-    } else {
-      res.status(500).json({message: 'internal server error'})
-    }
+    res.status(500).json({message: 'internal server error'})
     next(error);
-  }
-  finally {
-    await prisma.$disconnect()
   }
 };
 
