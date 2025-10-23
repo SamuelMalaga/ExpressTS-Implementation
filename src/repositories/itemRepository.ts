@@ -29,7 +29,7 @@ export default class itemRepository {
         return foundItem
     }
 
-    async updateItemById(itemId:number,attributes:Record<string, string>){
+    async updateItemById(itemId:number,attributes:Record<string, string>):Promise<Item | null>{
         const updatedItem = prisma.item.update({
             where:{
                 id: itemId
@@ -38,5 +38,15 @@ export default class itemRepository {
         })
 
         return updatedItem;
+    }
+
+    async deleteItemById(itemId:number): Promise<Item | null>{
+        const itemToDelete = await this.getItemById(itemId);
+        if (itemToDelete === null){
+            return itemToDelete
+        } else {
+            const deletedItem = prisma.item.delete({where:{id:itemId}});
+            return deletedItem;
+        }
     }
 }

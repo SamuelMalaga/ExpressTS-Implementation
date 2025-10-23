@@ -48,54 +48,34 @@ export const updateItem = async (req: Request, res: Response, next: NextFunction
   try {
     await prisma.$connect()
     const id = parseInt(req.params.id);
-    const name  = req.body.name;
-    const description = req.body.description;
-
-    const updateItem = await prisma.item.update({
-      where: {
-        id: id,
-      },
-      data: {
-        name: name,
-        description: description,
-      }
-    })
-
-    res.json(updateItem);
-  } catch (error) {
-    if (error === PrismaClientKnownRequestError){
-      res.status(404).json({message: 'item not found'})
-    } else {
-      res.status(500).json({message: 'internal server error'})
+    const attrsToUpdate = {
+      name : req.body.name,
+      description : req.body.description
     }
+
+    const item = await ItemRepository.updateItemById(id, attrsToUpdate)
+
+    if(item === null){res.status(404).json({"message":"item not found"})}
+    res.status(200).json(updateItem);
+  } catch (error) {
+    res.status(500).json({message: 'internal server error'})
     next(error);
-  }
-  finally {
-    await prisma.$disconnect()
   }
 };
 
 // Delete an item
 export const deleteItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await prisma.$connect()
     const id = parseInt(req.params.id);
 
-    const deletedItem = prisma.item.delete({
-      where: {
-        id:id
-      }
-    })
-    res.json(deletedItem);
-  } catch (error) {
-    if (error === PrismaClientKnownRequestError){
-      res.status(404).json({message: 'item not found'})
-    } else {
-      res.status(500).json({message: 'internal server error'})
+    const item = await ItemRepository.deleteItemById(id);
+
+    if(item === null){
+      res.status(404).json({"message":"item not found"})
     }
+    res.status(200).json(item);
+  } catch (error) {
+    res.status(500).json({message: 'internal server error'})
     next(error);
-  }
-  finally {
-    await prisma.$disconnect()
   }
 };
