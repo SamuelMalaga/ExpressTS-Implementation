@@ -1,46 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../config/prisma';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import itemRepository from '../repositories/itemRepository';
 
 // export const prisma = new PrismaClient();
-
+const ItemRepository = new itemRepository();
 
 // Create an item
 export const createItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const  name  = req.body.name;
-    const description = req.body.description;
     const item = { 
-      name : name,
-      description: description 
+      name : req.body.name,
+      description: req.body.description 
     };
-
-    await prisma.$connect();
-
-    const newItem = await prisma.item.create(
-      {data:item}
-    )
-
-    // await items.push(newItem);
+    const newItem = await ItemRepository.createItem(item)
     res.status(201).json(newItem);
   } catch (error) {
     next(error);
-  } finally {
-    await prisma.$disconnect()
-  }
+  } 
 };
 
 // Read all items
 export const getItems = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await prisma.$connect();
-    const allItems = await prisma.item.findMany();
+    const allItems = await ItemRepository.getAllItems();
     res.json(allItems);
-    await prisma.$disconnect()
   } catch (error) {
     next(error);
-  } finally {
-    await prisma.$disconnect()
   }
 };
 
