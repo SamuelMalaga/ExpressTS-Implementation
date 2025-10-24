@@ -86,6 +86,22 @@ describe('Item controller tests', () => {
             //Assert
             expect(res.status).toHaveBeenCalledWith(422)
         })
+        it('On a server internal error, return error message and 500', async ()=>{
+            //Arrange
+            const request = mockRequest({name:'Test', description:'A test description'} as any)
+            const res = mockResponse();
+            const errorMessage = {"message":'internal server error'}
+
+            //Act
+            mockItemRepository.createItem.mockImplementationOnce(() => {
+                throw new Error();
+            })
+            await controller.createItem(request as any, res as Response, mockNext)
+
+            //Assert
+            expect(res.status).toHaveBeenCalledWith(500)
+            expect(res.json).toHaveBeenCalledWith(errorMessage)
+        })
     })
     
 
