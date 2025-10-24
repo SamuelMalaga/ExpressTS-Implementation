@@ -23,6 +23,7 @@ export default class ItemController{
       const newItem = await this.itemRepository.createItem(item)
       res.status(201).json(newItem);
     } catch (error) {
+      res.status(500).json({message: 'internal server error'})
       next(error);
     } 
   };
@@ -33,6 +34,7 @@ export default class ItemController{
       const allItems = await this.itemRepository.getAllItems();
       res.json(allItems);
     } catch (error) {
+      res.status(500).json({message: 'internal server error'})
       next(error);
     }
   };
