@@ -16,6 +16,9 @@ export default class ItemController{
 
   async createItem (req: Request, res: Response, next: NextFunction){
     try {
+      if(req.body.name === null || req.body.name === undefined){
+        res.status(422).json({message:'Missing required parameter name'})
+      }
       const item = { 
         name : req.body.name,
         description: req.body.description 
