@@ -1,18 +1,16 @@
 import { Router } from 'express';
-import {
-  createItem,
-  getItems,
-  getItemById,
-  updateItem,
-  deleteItem,
-} from '../controllers/itemController';
+import itemController from '../controllers/itemController';
+import itemRepository from '../repositories/itemRepository';
+
+const IRep = new itemRepository();
+const IController = new itemController(IRep)
 
 const router = Router();
 
-router.get('/', getItems);
-router.get('/:id', getItemById);
-router.post('/', createItem);
-router.put('/:id', updateItem);
-router.delete('/:id', deleteItem);
+router.get('/', IController.getItems.bind(IController));
+router.get('/:id', IController.getItemById.bind(IController));
+router.post('/', IController.createItem.bind(IController));
+router.put('/:id', IController.updateItem.bind(IController));
+router.delete('/:id', IController.deleteItem.bind(IController));
 
 export default router;
