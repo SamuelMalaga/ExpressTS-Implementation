@@ -11,7 +11,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Create Release & Upload dist/index.js
+      - name: Generate build file
+        run: npm run build
+      - name: Create Release & Upload dist/
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/index.js
+          files: dist/

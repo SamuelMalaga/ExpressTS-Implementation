@@ -1,0 +1,2 @@
+## This is a experimental project to test different concepts about TDD, actions and so on
+### The goal here is to practice the concepts learned on Innovative software methods learned in my masters program
